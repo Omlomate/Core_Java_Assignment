@@ -1,48 +1,90 @@
 import java.util.*;
 
+// State class
+class State implements Comparable<State> {
+    String name;
+    long population;
+    double area;
+
+    State(String name, long population, double area) {
+        this.name = name;
+        this.population = population;
+        this.area = area;
+    }
+
+    @Override
+    public int compareTo(State other) {
+        return this.name.compareTo(other.name);
+    }
+
+    @Override
+    public String toString() {
+        return name + " (Pop: " + population + ", Area: " + area + " sq.km)";
+    }
+}
+
+// Country class
+class Country implements Comparable<Country> {
+    String name;
+    long population;
+    String capital;
+    List<State> states;
+
+    Country(String name, long population, String capital, List<State> states) {
+        this.name = name;
+        this.population = population;
+        this.capital = capital;
+        this.states = new ArrayList<>(states);
+        Collections.sort(this.states); // sort states by name
+    }
+
+    @Override
+    public int compareTo(Country other) {
+        return this.name.compareTo(other.name);
+    }
+
+    @Override
+    public String toString() {
+        return name + " (Capital: " + capital + ", Pop: " + population + ")";
+    }
+}
+
+// Main class
 public class CountryStateSorter {
-
     public static void main(String[] args) {
+        List<Country> countries = new ArrayList<>();
 
-        // TreeMap for storing countries in ascending order
-        Map<String, Set<String>> countryStatesMap = new TreeMap<>();
+        // Example states for India
+        List<State> indiaStates = Arrays.asList(
+            new State("Maharashtra", 112374333, 307713),
+            new State("Karnataka", 61095297, 191791),
+            new State("Assam", 31205576, 78438)
+        );
+        countries.add(new Country("India", 1393409038, "New Delhi", indiaStates));
 
-        // Adding India and its states
-        countryStatesMap.put("India", new TreeSet<>(Arrays.asList(
-            "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
-            "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir",
-            "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra",
-            "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
-            "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
-            "Uttar Pradesh", "Uttarakhand", "West Bengal"
-        )));
+        // Example states for USA
+        List<State> usaStates = Arrays.asList(
+            new State("California", 39538223, 423967),
+            new State("Texas", 29145505, 695662),
+            new State("Florida", 21538187, 170312)
+        );
+        countries.add(new Country("USA", 331002651, "Washington, D.C.", usaStates));
 
-        // Adding USA and its states
-        countryStatesMap.put("USA", new TreeSet<>(Arrays.asList(
-            "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
-            "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia",
-            "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky",
-            "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan",
-            "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada",
-            "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina",
-            "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania",
-            "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas",
-            "Utah", "Vermont", "Virginia", "Washington", "West Virginia",
-            "Wisconsin", "Wyoming"
-        )));
+        // Example states for Canada
+        List<State> canadaStates = Arrays.asList(
+            new State("Ontario", 14734014, 1076395),
+            new State("Quebec", 8537674, 1542056),
+            new State("British Columbia", 5110917, 944735)
+        );
+        countries.add(new Country("Canada", 38008005, "Ottawa", canadaStates));
 
-        // Adding Canada and its states
-        countryStatesMap.put("Canada", new TreeSet<>(Arrays.asList(
-            "Alberta", "British Columbia", "Manitoba", "New Brunswick",
-            "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia",
-            "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan",
-            "Yukon"
-        )));
+        // Sort countries
+        Collections.sort(countries);
 
-        // Printing countries and their states
-        for (Map.Entry<String, Set<String>> entry : countryStatesMap.entrySet()) {
-            System.out.println("Country: " + entry.getKey());
-            for (String state : entry.getValue()) {
+        // Display
+        for (Country country : countries) {
+            System.out.println("Country: " + country);
+            for (State state : country.states) {
                 System.out.println("  - " + state);
             }
             System.out.println();

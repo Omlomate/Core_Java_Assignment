@@ -1,50 +1,53 @@
-# Country-State Sorter in Java
 
-## Overview
+# Country and State Sorter in Java
 
-This Java program organizes countries and their respective states in **alphabetical order** using Java Collections. The goal is to store and display the countries along with their states in **ascending** (sorted) order.
+This Java program demonstrates how to model countries and their corresponding states using object-oriented programming (OOP). The data is sorted in ascending alphabetical order by country name and by state name within each country.
 
-## Features
+## 🧾 Features
 
-- Uses `TreeMap` to store countries, which automatically sorts them alphabetically.
-- Uses `TreeSet` to store the states of each country, which also sorts them alphabetically.
-- Clean and efficient design using core Java only (no external libraries).
+- Uses classes `Country` and `State` to represent real-world entities.
+- Implements `Comparable` interface to enable alphabetical sorting.
+- Displays country details including capital and population.
+- Displays each state's population and area in square kilometers.
 
-## Data
+## 🧱 Classes
 
-### Countries included:
+### `State`
+Represents a state/province with:
+- `name` (String)
+- `population` (long)
+- `area` (double in sq.km)
+Implements `Comparable<State>` to allow alphabetical sorting.
 
-- **India** with 29 states
-- **USA** with 50 states
-- **Canada** with 13 provinces and territories
+### `Country`
+Represents a country with:
+- `name` (String)
+- `population` (long)
+- `capital` (String)
+- `states` (List of `State`)
+Implements `Comparable<Country>` to allow alphabetical sorting of countries.
 
-## Data Structures Used
+## 🚀 How It Works
 
-- `TreeMap<String, Set<String>>` for storing countries and their states.
-- `TreeSet<String>` to store each country's states in sorted order.
+1. States are created and grouped under their respective countries.
+2. Countries and their states are sorted alphabetically.
+3. The data is displayed in a formatted manner.
 
-## How It Works
-
-1. A `TreeMap` is used to ensure countries are sorted.
-2. For each country, a `TreeSet` is created and populated with its states.
-3. The entries in the `TreeMap` are printed, with each country's states listed below it.
-
-## Sample Output
+## ✅ Example Output
 
 ```
-Country: Canada
-  - Alberta
-  - British Columbia
-  ...
+Country: Canada (Capital: Ottawa, Pop: 38008005)
+  - British Columbia (Pop: 5110917, Area: 944735.0 sq.km)
+  - Ontario (Pop: 14734014, Area: 1076395.0 sq.km)
+  - Quebec (Pop: 8537674, Area: 1542056.0 sq.km)
 
-Country: India
-  - Andhra Pradesh
-  - Arunachal Pradesh
-  ...
+Country: India (Capital: New Delhi, Pop: 1393409038)
+  - Assam (Pop: 31205576, Area: 78438.0 sq.km)
+  - Karnataka (Pop: 61095297, Area: 191791.0 sq.km)
+  - Maharashtra (Pop: 112374333, Area: 307713.0 sq.km)
 
-Country: USA
-  - Alabama
-  - Alaska
-  ...
+Country: USA (Capital: Washington, D.C., Pop: 331002651)
+  - California (Pop: 39538223, Area: 423967.0 sq.km)
+  - Florida (Pop: 21538187, Area: 170312.0 sq.km)
+  - Texas (Pop: 29145505, Area: 695662.0 sq.km)
 ```
- 
