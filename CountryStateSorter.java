@@ -1,6 +1,6 @@
 import java.util.*;
 
-// Abstract Location class for reusability
+// Abstract Location class
 abstract class Location {
     String name;
     long population;
@@ -15,28 +15,25 @@ abstract class Location {
     public abstract String getDetails();
 }
 
-// Displayable interface for consistent output
+// Interface
 interface Displayable {
     String getDisplayInfo();
 }
 
-// City class extending Location
+// City class
 class City extends Location implements Comparable<City>, Displayable {
     public City(String name, long population, double area) {
         super(name, population, area);
     }
 
-    @Override
     public int compareTo(City other) {
         return this.name.compareTo(other.name);
     }
 
-    @Override
     public String getDetails() {
         return "City: " + name + " (Pop: " + population + ", Area: " + area + " sq.km)";
     }
 
-    @Override
     public String getDisplayInfo() {
         return getDetails();
     }
@@ -44,25 +41,25 @@ class City extends Location implements Comparable<City>, Displayable {
 
 // State class
 class State extends Location implements Comparable<State>, Displayable {
-    List<City> cities;
+    List<City> cities = new ArrayList<>();
 
-    public State(String name, long population, double area, List<City> cities) {
+    public State(String name, long population, double area) {
         super(name, population, area);
-        this.cities = new ArrayList<>(cities);
-        Collections.sort(this.cities);
     }
 
-    @Override
+    public void addCity(City city) {
+        cities.add(city);
+        Collections.sort(cities);
+    }
+
     public int compareTo(State other) {
         return this.name.compareTo(other.name);
     }
 
-    @Override
     public String getDetails() {
         return "State: " + name + " (Pop: " + population + ", Area: " + area + " sq.km)";
     }
 
-    @Override
     public String getDisplayInfo() {
         StringBuilder sb = new StringBuilder(getDetails()).append("\n");
         for (City city : cities) {
@@ -75,26 +72,26 @@ class State extends Location implements Comparable<State>, Displayable {
 // Country class
 class Country extends Location implements Comparable<Country>, Displayable {
     String capital;
-    List<State> states;
+    List<State> states = new ArrayList<>();
 
-    public Country(String name, long population, double area, String capital, List<State> states) {
+    public Country(String name, long population, double area, String capital) {
         super(name, population, area);
         this.capital = capital;
-        this.states = new ArrayList<>(states);
-        Collections.sort(this.states);
     }
 
-    @Override
+    public void addState(State state) {
+        states.add(state);
+        Collections.sort(states);
+    }
+
     public int compareTo(Country other) {
         return this.name.compareTo(other.name);
     }
 
-    @Override
     public String getDetails() {
         return name + " (Capital: " + capital + ", Pop: " + population + ")";
     }
 
-    @Override
     public String getDisplayInfo() {
         StringBuilder sb = new StringBuilder("Country: ").append(getDetails()).append("\n");
         for (State state : states) {
@@ -106,46 +103,105 @@ class Country extends Location implements Comparable<Country>, Displayable {
 
 // Main class
 public class CountryStateSorter {
+    static Map<String, Country> countryMap = new TreeMap<>();
+    static Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
-        List<Country> countries = new ArrayList<>();
+        boolean running = true;
 
-        // India example with cities
-        List<City> maharashtraCities = Arrays.asList(
-                new City("Mumbai", 20411000, 603.4),
-                new City("Pune", 7214000, 331.26)
-        );
-        State maharashtra = new State("Maharashtra", 112374333, 307713, maharashtraCities);
+        while (running) {
+            System.out.println("\n1. Add Country\n2. Add State\n3. Add City\n4. Display All\n5. Exit");
+            System.out.print("Choose an option: ");
+            int choice = Integer.parseInt(sc.nextLine());
 
-        List<City> karnatakaCities = Arrays.asList(
-                new City("Bengaluru", 8443675, 741),
-                new City("Mysuru", 920550, 128.4)
-        );
-        State karnataka = new State("Karnataka", 61095297, 191791, karnatakaCities);
+            switch (choice) {
+                case 1 -> addCountry();
+                case 2 -> addState();
+                case 3 -> addCity();
+                case 4 -> displayAll();
+                case 5 -> running = false;
+                default -> System.out.println("Invalid option. Try again.");
+            }
+        }
+    }
 
-        countries.add(new Country("India", 1393409038, 3287263, "New Delhi", Arrays.asList(maharashtra, karnataka)));
+    static void addCountry() {
+        System.out.print("Country name: ");
+        String name = sc.nextLine();
+        System.out.print("Population: ");
+        long population = Long.parseLong(sc.nextLine());
+        System.out.print("Area: ");
+        double area = Double.parseDouble(sc.nextLine());
+        System.out.print("Capital: ");
+        String capital = sc.nextLine();
 
-        // USA example with cities
-        List<City> californiaCities = Arrays.asList(
-                new City("Los Angeles", 3979576, 1214.9),
-                new City("San Francisco", 815201, 121)
-        );
-        State california = new State("California", 39538223, 423967, californiaCities);
+        Country country = new Country(name, population, area, capital);
+        countryMap.put(name, country);
+        System.out.println("Country added successfully.");
+    }
 
-        countries.add(new Country("USA", 331002651, 9833520, "Washington, D.C.", Arrays.asList(california)));
+    static void addState() {
+        System.out.print("Country name: ");
+        String countryName = sc.nextLine();
+        Country country = countryMap.get(countryName);
+        if (country == null) {
+            System.out.println("Country not found.");
+            return;
+        }
 
-        // Canada example
-        List<City> ontarioCities = Arrays.asList(
-                new City("Toronto", 2731571, 630.2),
-                new City("Ottawa", 934243, 2790.3)
-        );
-        State ontario = new State("Ontario", 14734014, 1076395, ontarioCities);
+        System.out.print("State name: ");
+        String stateName = sc.nextLine();
+        System.out.print("Population: ");
+        long population = Long.parseLong(sc.nextLine());
+        System.out.print("Area: ");
+        double area = Double.parseDouble(sc.nextLine());
 
-        countries.add(new Country("Canada", 38008005, 9984670, "Ottawa", Arrays.asList(ontario)));
+        State state = new State(stateName, population, area);
+        country.addState(state);
+        System.out.println("State added successfully.");
+    }
 
-        Collections.sort(countries);
+    static void addCity() {
+        System.out.print("Country name: ");
+        String countryName = sc.nextLine();
+        Country country = countryMap.get(countryName);
+        if (country == null) {
+            System.out.println("Country not found.");
+            return;
+        }
 
-        // Display Output
-        for (Country country : countries) {
+        System.out.print("State name: ");
+        String stateName = sc.nextLine();
+        State state = null;
+        for (State s : country.states) {
+            if (s.name.equalsIgnoreCase(stateName)) {
+                state = s;
+                break;
+            }
+        }
+        if (state == null) {
+            System.out.println("State not found.");
+            return;
+        }
+
+        System.out.print("City name: ");
+        String cityName = sc.nextLine();
+        System.out.print("Population: ");
+        long population = Long.parseLong(sc.nextLine());
+        System.out.print("Area: ");
+        double area = Double.parseDouble(sc.nextLine());
+
+        City city = new City(cityName, population, area);
+        state.addCity(city);
+        System.out.println("City added successfully.");
+    }
+
+    static void displayAll() {
+        if (countryMap.isEmpty()) {
+            System.out.println("No data available.");
+            return;
+        }
+        for (Country country : countryMap.values()) {
             System.out.println(country.getDisplayInfo());
         }
     }
