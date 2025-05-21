@@ -1,53 +1,54 @@
+# 🌍 Country-State-City Hierarchy in Java
 
-# Country and State Sorter in Java
+This Java project models a geographical hierarchy of **Countries**, **States**, and **Cities** using object-oriented principles like **inheritance**, **abstraction**, **interfaces**, and **polymorphism**.
 
-This Java program demonstrates how to model countries and their corresponding states using object-oriented programming (OOP). The data is sorted in ascending alphabetical order by country name and by state name within each country.
+## 🚀 Features
 
-## 🧾 Features
+- Abstract `Location` class for reusable attributes (name, population, area)
+- `City`, `State`, and `Country` classes with their respective details
+- Interface `Displayable` for consistent display across all entities
+- `Comparable` implementation for sorting countries, states, and cities alphabetically
+- Console output of structured and sorted hierarchical data
 
-- Uses classes `Country` and `State` to represent real-world entities.
-- Implements `Comparable` interface to enable alphabetical sorting.
-- Displays country details including capital and population.
-- Displays each state's population and area in square kilometers.
 
-## 🧱 Classes
+## 🧱 Class Hierarchy
+Location (abstract)
+├── City
+├── State
+└── Country
 
-### `State`
-Represents a state/province with:
-- `name` (String)
-- `population` (long)
-- `area` (double in sq.km)
-Implements `Comparable<State>` to allow alphabetical sorting.
 
-### `Country`
-Represents a country with:
-- `name` (String)
-- `population` (long)
-- `capital` (String)
-- `states` (List of `State`)
-Implements `Comparable<Country>` to allow alphabetical sorting of countries.
 
-## 🚀 How It Works
+- **Location**: Abstract class containing common attributes:
+  - `name`, `population`, `area`
+- **City**: Represents a city. Inherits from `Location`.
+- **State**: Contains a list of `City` objects. Inherits from `Location`.
+- **Country**: Contains a list of `State` objects and a `capital`. Inherits from `Location`.
 
-1. States are created and grouped under their respective countries.
-2. Countries and their states are sorted alphabetically.
-3. The data is displayed in a formatted manner.
+---
 
-## ✅ Example Output
+## 🔧 Interfaces
 
-```
+- **Displayable**: Interface with method `getDisplayInfo()` used by `Country`, `State`, and `City` to present formatted information.
+
+
+## Sample output
+---
 Country: Canada (Capital: Ottawa, Pop: 38008005)
-  - British Columbia (Pop: 5110917, Area: 944735.0 sq.km)
-  - Ontario (Pop: 14734014, Area: 1076395.0 sq.km)
-  - Quebec (Pop: 8537674, Area: 1542056.0 sq.km)
+  State: Ontario (Pop: 14734014, Area: 1076395.0 sq.km)
+    -> City: Ottawa (Pop: 934243, Area: 2790.3 sq.km)
+    -> City: Toronto (Pop: 2731571, Area: 630.2 sq.km)
 
 Country: India (Capital: New Delhi, Pop: 1393409038)
-  - Assam (Pop: 31205576, Area: 78438.0 sq.km)
-  - Karnataka (Pop: 61095297, Area: 191791.0 sq.km)
-  - Maharashtra (Pop: 112374333, Area: 307713.0 sq.km)
+  State: Karnataka (Pop: 61095297, Area: 191791.0 sq.km)
+    -> City: Bengaluru (Pop: 8443675, Area: 741.0 sq.km)
+    -> City: Mysuru (Pop: 920550, Area: 128.4 sq.km)
+  State: Maharashtra (Pop: 112374333, Area: 307713.0 sq.km)
+    -> City: Mumbai (Pop: 20411000, Area: 603.4 sq.km)
+    -> City: Pune (Pop: 7214000, Area: 331.26 sq.km)
 
 Country: USA (Capital: Washington, D.C., Pop: 331002651)
-  - California (Pop: 39538223, Area: 423967.0 sq.km)
-  - Florida (Pop: 21538187, Area: 170312.0 sq.km)
-  - Texas (Pop: 29145505, Area: 695662.0 sq.km)
-```
+  State: California (Pop: 39538223, Area: 423967.0 sq.km)
+    -> City: Los Angeles (Pop: 3979576, Area: 1214.9 sq.km)
+    -> City: San Francisco (Pop: 815201, Area: 121.0 sq.km)
+
